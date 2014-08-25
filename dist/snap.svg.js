@@ -2578,6 +2578,7 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
         }
         if (tstr instanceof Snap.Matrix) {
             this.matrix = tstr;
+            this._.transform = tstr.toTransformString();
         } else {
             extractTransform(this, tstr);
         }
@@ -2968,12 +2969,6 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
         defs.appendChild(this.node);
         return this;
     };
-    /*\
-     * Element.pattern
-     [ method ]
-     **
-     * Depricated. Use @Element.toPattern instead.
-    \*/
     /*\
      * Element.toPattern
      [ method ]
@@ -4682,14 +4677,12 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
     proto.ptrn = function (x, y, width, height, vx, vy, vw, vh) {
         if (is(x, "object")) {
             var attr = x;
-        } else if (!arguments.length) {
-            attr = {patternUnits: "userSpaceOnUse"};
         } else {
-            attr = {};
-            if (x != null) {
+            attr = {patternUnits: "userSpaceOnUse"};
+            if (x) {
                 attr.x = x;
             }
-            if (y != null) {
+            if (y) {
                 attr.y = y;
             }
             if (width != null) {
