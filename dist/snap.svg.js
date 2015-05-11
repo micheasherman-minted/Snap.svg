@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-// build: 2015-03-12
+// build: 2015-05-11
 
 // Copyright (c) 2013 Adobe Systems Incorporated. All rights reserved.
 // 
@@ -795,13 +795,13 @@ var mina = (function (eve) {
     return mina;
 })(typeof eve == "undefined" ? function () {} : eve);
 // Copyright (c) 2013 Adobe Systems Incorporated. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -1516,7 +1516,7 @@ prepareRGB = function (r, g, b) {
         g /= 255;
         b /= 255;
     }
-    
+
     return [r, g, b];
 },
 packageRGB = function (r, g, b, o) {
@@ -1755,7 +1755,7 @@ Snap.parsePathString = function (pathString) {
     if (pth.arr) {
         return Snap.path.clone(pth.arr);
     }
-    
+
     var paramCounts = {a: 7, c: 6, o: 2, h: 1, l: 2, m: 2, r: 4, q: 4, s: 4, t: 2, v: 1, u: 3, z: 0},
         data = [];
     if (is(pathString, "array") && is(pathString[0], "array")) { // rough assumption
@@ -2103,9 +2103,10 @@ function add2group(list) {
         this[j++] = wrap(children[i]);
     }
     return this;
-}
+};
 // Hub garbage collector every 10s
-setInterval(function () {
+// TODO weak hash map here
+Snap._.defaultGC = function () {
     for (var key in hub) if (hub[has](key)) {
         var el = hub[key],
             node = el.node;
@@ -2113,7 +2114,9 @@ setInterval(function () {
             delete hub[key];
         }
     }
-}, 1e4);
+};
+Snap._.gcInterval = setInterval(Snap._.defaultGC, 1e4);
+
 function Element(el) {
     if (el.snap in hub) {
         return hub[el.snap];
